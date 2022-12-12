@@ -19,7 +19,7 @@ num_classes = 4
 maxlen = 128
 batch_size = 16
 
-path = "/Users/pan/wwm_uncased_L-24_H-1024_A-16/"               # 预训练bert 根据自己路径进行调整
+path = "/Users/pan/uncased_L-12_H-768_A-12/"           # 预训练bert 根据自己路径进行调整
 config_path = path + 'bert_config.json'
 checkpoint_path = path + 'bert_model.ckpt'
 dict_path = path + 'vocab.txt'
