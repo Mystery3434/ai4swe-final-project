@@ -10,7 +10,7 @@ from bert4keras.snippets import sequence_padding, DataGenerator
 import ipykernel
 from keras.layers import Lambda, Dense
 from tqdm import tqdm
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, classification_report
 import json
 import pandas as pd
 import os
@@ -164,14 +164,21 @@ class Evaluator(keras.callbacks.Callback):
 def evaluate(data):
     right = 0
     total = 0
+    all_preds = []
+    all_labels = []
     for x_true, _ in tqdm(data):
         x_true, y_true = x_true[:2], x_true[2]
         y_pred = model.predict(x_true)
         y_pred = y_pred[:, mask_idx, [n_id, o_id, p_id, e_id]].argmax(axis=1)
+        all_preds.append(y_pred)
         y_true = y_true[:, mask_idx]
         y_true = list(map(lambda i: token2id[i], y_true))
+        all_labels.append(y_true)
         right += (y_true == y_pred).sum()
         total += len(y_true)
+    all_preds = np.concatenate(all_preds)
+    all_labels= np.concatenate(all_labels)
+    print(classification_report(all_labels, all_preds, labels=[0,1]))
     return right / total
 
 # 测试集推理预测
