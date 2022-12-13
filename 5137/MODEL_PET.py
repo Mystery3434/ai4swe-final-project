@@ -169,7 +169,7 @@ def evaluate(data):
     for x_true, _ in tqdm(data):
         x_true, y_true = x_true[:2], x_true[2]
         y_pred = model.predict(x_true)
-        y_pred = y_pred[:, mask_idx, [n_id, o_id, p_id, e_id]].argmax(axis=1)
+        y_pred = y_pred[:, mask_idx, [n_id, o_id]].argmax(axis=1)
         all_preds.append(y_pred)
         y_true = y_true[:, mask_idx]
         y_true = list(map(lambda i: token2id[i], y_true))
