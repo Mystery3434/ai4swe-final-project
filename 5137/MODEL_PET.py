@@ -10,7 +10,7 @@ from bert4keras.snippets import sequence_padding, DataGenerator
 import ipykernel
 from keras.layers import Lambda, Dense
 from tqdm import tqdm
-from sklearn.metrics import f1_score, classification_report
+from sklearn.metrics import classification_report
 import json
 import pandas as pd
 import os
@@ -19,7 +19,7 @@ num_classes = 4
 maxlen = 128
 batch_size = 16
 
-path = "/Users/pan/uncased_L-12_H-768_A-12/"           # 预训练bert 根据自己路径进行调整
+path = "/Users/pan/uncased_L-12_H-768_A-12/"               # 预训练bert 根据自己路径进行调整
 config_path = path + 'bert_config.json'
 checkpoint_path = path + 'bert_model.ckpt'
 dict_path = path + 'vocab.txt'
@@ -39,9 +39,27 @@ def load_data(filename):
         D.append((text, label))
     return D
 
+def load_train_data(filename,filename2):
+    """加载数据
+    单条格式：(文本, 标签id)
+    """
+    D=[]
+    data = pd.read_csv(filename, usecols=['reviews', 'Judgement'], keep_default_na=False)
+    for index, row in data.iterrows():
+        text = row['reviews'].lower()
+        label = row['Judgement']
+        D.append((text, label))
+    data = pd.read_csv(filename2, usecols=['Reviews', 'Useful?'], keep_default_na=False)
+    for index, row in data.iterrows():
+        text = row['Reviews'].lower()
+        label = row['Useful?']
+        D.append((text, label))
+    return D
+
+
 
 # 加载数据集
-train_data = load_data('original_data_X_train.csv')
+train_data = load_train_data('original_data_X_train.csv','balanced_augmentation_dataset.csv')
 test_data = load_data('original_data_X_test.csv')
 
 # 建立分词器
@@ -177,8 +195,8 @@ def evaluate(data):
         right += (y_true == y_pred).sum()
         total += len(y_true)
     all_preds = np.concatenate(all_preds)
-    all_labels= np.concatenate(all_labels)
-    print(classification_report(all_labels, all_preds, labels=[0,1]))
+    all_labels = np.concatenate(all_labels)
+    print(classification_report(all_labels, all_preds, labels=[0, 1]))
     return right / total
 
 # 测试集推理预测
