@@ -36,7 +36,7 @@ def load_data(X_test, y_test):
    #data = pd.read_csv(filename, usecols=['reviews', 'Judgement'], keep_default_na=False)
     for index, row in data.iterrows():
         text = row['reviews'].lower()
-        label = row['Judgement']
+        label = row['Judgement'].iloc[0]
         D.append((text, label))
     return D
 
@@ -48,7 +48,7 @@ def load_train_data(X_train, y_train):
     data = pd.concat([X_train, y_train], axis=1)
     for index, row in data.iterrows():
         text = row['reviews'].lower()
-        label = row['Judgement']
+        label = row['Judgement'].iloc[0]
         D.append((text, label))
     return D
 
