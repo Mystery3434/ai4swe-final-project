@@ -67,7 +67,7 @@ X_train_augmented = pd.concat([train_X_original, augmented_data[["reviews"]]], a
 y_train_augmented = pd.concat([train_y_original, augmented_data[["Judgement"]]], axis=0, ignore_index=True)
 
 # 加载数据集
-train_data = load_train_data(X_train_augmented, y_train_augmented)
+train_data = load_train_data(train_X_original, train_y_original)
 test_data = load_data(X_test, y_test)
 
 
