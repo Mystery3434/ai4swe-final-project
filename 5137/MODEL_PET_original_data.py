@@ -1,5 +1,6 @@
 #! -*- coding:utf-8 -*-
 # Pattern-Exploiting Training(PET) score:
+# Code adapted from https://github.com/bojone/Pattern-Exploiting-Training/blob/master/sentiment.py
 import numpy as np
 from bert4keras.backend import keras, K
 from bert4keras.layers import Loss
